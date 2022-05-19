@@ -51,7 +51,10 @@ func (app Cmder) Run() {
 				panic(err)
 			}
 		}
-		fmt.Fprintf(rootCmd.OutOrStderr(), "run `%[1]s %[2]s -w` to see all available markers, or `%[1]s %[2]s -h` for usage\n", cmd.CalledAs(), strings.Join(os.Args[1:], " "))
+		fmt.Fprintf(rootCmd.OutOrStderr(),
+			"run `%[1]s %[2]s -w` to see all available markers, or `%[1]s %[2]s -h` for usage\n",
+			rootCmd.CalledAs(), strings.Join(os.Args[1:], " "))
+
 		os.Exit(1)
 	}
 }
