@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-package main
+package di
 
 import (
-	"fmt"
+	"io"
 
-	"github.com/spf13/cobra"
+	"sigs.k8s.io/controller-tools/pkg/genall"
+	"sigs.k8s.io/controller-tools/pkg/loader"
 )
 
-const (
-	Version string = "0.1.0"
-)
-
-var versionCmd = &cobra.Command{
-	Use: "version",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("v%s", Version)
-	},
+// WriteTo - write to file
+//
+// Copyright 2018 The Kubernetes Authors.
+//
+func WriteTo(ctx *genall.GenerationContext, root *loader.Package, outBytes []byte, path string) {
+	outputFile, err := ctx.Open(root, path) // zz_generated.iocgo.go
+	if err != nil {
+		root.AddError(err)
+		return
+	}
+	defer outputFile.Close()
+	n, err := outputFile.Write(outBytes)
+	if err != nil {
+		root.AddError(err)
+		return
+	}
+	if n < len(outBytes) {
+		root.AddError(io.ErrShortWrite)
+	}
 }

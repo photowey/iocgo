@@ -14,17 +14,37 @@
  * limitations under the License.
  */
 
-package main
+package version
 
 import (
 	"fmt"
+	"runtime/debug"
 
 	"github.com/spf13/cobra"
 )
 
-var genCmd = &cobra.Command{
-	Use: "gen",
+const (
+	Version string = "0.1.0"
+)
+
+var Cmd = &cobra.Command{
+	Use: "version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("prepare to generate IOC static code")
+		fmt.Printf("v%s", Version)
 	},
+}
+
+// MainVersion returns the version of the main module
+func MainVersion() string {
+	info, ok := debug.ReadBuildInfo()
+	if !ok || info == nil || info.Main.Version == "" {
+		// binary has not been built with module support or doesn't contain a version.
+		return "(unknown)"
+	}
+	return info.Main.Version
+}
+
+// Print prints the main module version on stdout.
+func Print() {
+	fmt.Printf("Version: %s\n", MainVersion())
 }

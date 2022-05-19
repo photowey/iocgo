@@ -18,8 +18,11 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"os"
+	"strings"
 
+	"github.com/photowey/iocgo/cmd/ioctl/gen"
+	"github.com/photowey/iocgo/cmd/ioctl/version"
 	"github.com/spf13/cobra"
 )
 
@@ -34,14 +37,21 @@ var (
 )
 
 func init() {
-	rootCmd.AddCommand(versionCmd)
-	rootCmd.AddCommand(genCmd)
+	rootCmd.AddCommand(version.Cmd)
+	rootCmd.AddCommand(gen.Cmd)
 }
 
 type Cmder struct{}
 
 func (app Cmder) Run() {
 	if err := rootCmd.Execute(); err != nil {
-		log.Println(err)
+		if _, noUsage := err.(gen.NoUsageError); !noUsage {
+			// print the usage unless we suppressed it
+			if err := rootCmd.Usage(); err != nil {
+				panic(err)
+			}
+		}
+		fmt.Fprintf(rootCmd.OutOrStderr(), "run `%[1]s %[2]s -w` to see all available markers, or `%[1]s %[2]s -h` for usage\n", cmd.CalledAs(), strings.Join(os.Args[1:], " "))
+		os.Exit(1)
 	}
 }
