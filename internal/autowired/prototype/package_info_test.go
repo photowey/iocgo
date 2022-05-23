@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package beandefinition
+package prototype
 
 //
-// the package of IOC bean definition.
+// Prototype scope
 //

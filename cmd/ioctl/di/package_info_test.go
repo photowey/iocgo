@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package examples
+package di
 
 //
-// examples package
+// DI package
 //

@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package scope
+package singleton
 
-type Scope uint8
-
-const (
-	Singleton Scope = 1 << 1
-	Prototype Scope = 1 << 2
-)
+//
+// Singleton scope
+//

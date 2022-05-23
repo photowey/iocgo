@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package scope
+package scope_test
 
-type Scope uint8
-
-const (
-	Singleton Scope = 1 << 1
-	Prototype Scope = 1 << 2
-)
+//
+// the scope of IOC bean
+//
+// e.g.:
+//
+// 1.singleton
+//
+// 2.prototype
+//

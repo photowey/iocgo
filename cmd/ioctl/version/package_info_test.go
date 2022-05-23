@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package scope
+package version
 
 //
-// the scope of IOC bean
+// Version
 //
-// e.g.:
-//
-// 1.singleton
-//
-// 2.prototype
-//
-
-type Scope uint8
-
-const (
-	Singleton Scope = iota + 1
-	Prototype
-)

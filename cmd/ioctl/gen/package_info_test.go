@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package beanfactory
+package gen
 
 //
-// the package of bean-factory(IOC)
+// Generate code package
 //

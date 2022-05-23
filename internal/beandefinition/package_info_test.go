@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-package scope
+package beandefinition_test
 
-type Scope uint8
-
-const (
-	Singleton Scope = 1 << 1
-	Prototype Scope = 1 << 2
+import (
+	"github.com/photowey/iocgo/internal/scope"
 )
+
+//
+// the package of IOC bean definition.
+//
+
+// +ioc:autowired:beandefinition  // mark a beandefinition
+
+type DumpyBeanDefinition struct {
+	Name              string      // bean name
+	Scope             scope.Scope // scope of bean
+	AutowireCandidate bool        // autowire enabled
+	Configuration     string      // configuration struct
+	FactoryFunc       string      // factory func
+	InitFunc          string      // init func
+	DestroyFunc       string      // destroy func
+	Description       string      // description of bean
+}

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package scope
+package beanfactory_test
 
-type Scope uint8
+//
+// the package of bean-factory(IOC)
+//
 
-const (
-	Singleton Scope = 1 << 1
-	Prototype Scope = 1 << 2
-)
+type BeanFactory interface {
+}
