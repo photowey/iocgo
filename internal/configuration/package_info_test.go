@@ -38,8 +38,20 @@ type PersonConfiguration struct {
 
 // +ioc:autowired:factoryfunc // mark a func is configuration factory func -> @Bean
 // +ioc:autowired:scope=singleton // mark a bean scope is singleton
+// +ioc:autowired:component=personSingleton // The id of the bean defined in the ioc
 
 func (config *PersonConfiguration) CreatePerson(ctx context.Context) Person {
+	return Person{
+		ID:   9527,
+		Name: "photowey",
+		Age:  18,
+	}
+}
+
+// +ioc:autowired:factoryfunc
+// +ioc:autowired:scope=singleton // The id of the bean default is factory-func name,such as: PersonSingleton
+
+func (config *PersonConfiguration) PersonSingleton(ctx context.Context) Person {
 	return Person{
 		ID:   9527,
 		Name: "photowey",

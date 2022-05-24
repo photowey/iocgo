@@ -35,4 +35,5 @@ type DumpyBeanDefinition struct {
 	InitFunc          string      // init func
 	DestroyFunc       string      // destroy func
 	Description       string      // description of bean
+	Interfaces        []string    // implements of interfaces
 }
