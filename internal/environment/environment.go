@@ -23,6 +23,16 @@ type Environment interface {
 	// ---------------------------------------------------------------- Get
 
 	GetProperty(key string, standBy any) (any, error)
+
+	// ---------------------------------------------------------------- Set
+
+	SetProperty(key string, standBy any)
+}
+
+type StandardEnvironment interface {
+	Environment
+	// ---------------------------------------------------------------- Get
+
 	GetString(key string) (string, error)
 	GetInt64(key string) (int64, error)
 	GetInt32(key string) (int32, error)
@@ -37,7 +47,6 @@ type Environment interface {
 
 	// ---------------------------------------------------------------- Set
 
-	SetProperty(key string, standBy any)
 	SetString(key string, value string)
 	SetInt64(key string, value int64)
 	SetInt32(key string, value int32)
