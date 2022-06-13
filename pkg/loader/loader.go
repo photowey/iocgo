@@ -17,72 +17,61 @@
 package loader
 
 import (
-	"fmt"
-
-	"github.com/photowey/iocgo/pkg/color"
-	"github.com/spf13/viper"
+	"github.com/photowey/iocgo/pkg/codec"
 )
 
 const (
-	EnvKeyConfigFilePath     = "configs/config.yml"
-	EnvKeyIOCGoProfileActive = "IOCGO_PROFILE_ACTIVE" // env
-	EnvKeyEnvPrefix          = "IOCGO"                // IOCGO_VERSION
+	DefaultConfigName = "config"
+	DefaultConfigType = "yaml"
 )
 
-// Bind is a func, load config file form FS by viper[github](https://github.com/spf13/viper)
-// and bind into a given struct
-//
-// @param fileName the target config file's name
-//
-// @param fileType the target config file's type
-//
-// @param dst the target struct of decode
-//
-// @param paths search paths
-//
-/*
-	viper.SetConfigName("config") // name of config file (without extension)
-	viper.SetConfigType("yaml") // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath("/etc/appname/")  // path to look for the config file in
-	viper.AddConfigPath("$HOME/.appname") // call multiple times to add many search paths
-	viper.AddConfigPath(".")              // optionally look for config in the working directory
-	err := viper.ReadInConfig() // Find and read the config file
-...
-*/
-func Bind(fileName, fileType string, dst any, searchPath ...string) error {
-	viper.SetConfigName(fileName)
-	viper.SetConfigType(fileType)
-	viper.SetEnvPrefix(EnvKeyEnvPrefix)
-	for _, path := range searchPath {
-		viper.AddConfigPath(path)
-	}
+var (
+	DefaultConfigSearchPaths = []string{".", "config", "configs"}
+)
 
-	if err := viper.ReadInConfig(); err != nil {
-		return fmt.Errorf("[%s] [%s] parsing config:%s: %w",
-			color.Cyan("Loader"), color.Red("ERROR"), fileName, err)
-	}
+var _ Binder = (*binder)(nil)
+var _ Loader = (*loaderx)(nil)
 
-	if err := viper.Unmarshal(dst); err != nil {
-		return fmt.Errorf("[%s] [%s] unable to decode into struct:%T, %w",
-			color.Cyan("Loader"), color.Red("ERROR"), dst, err)
-	}
+type Binder interface {
+	Bind(prefix string, dst any) error
+}
+
+type binder struct {
+}
+
+func NewBinder() Binder {
+	return &binder{}
+}
+
+func (bx binder) Bind(prefix string, dst any) error {
 
 	return nil
 }
 
-// Load is a func, load config file form FS by viper[github](https://github.com/spf13/viper)
-func Load(fileName, fileType string, searchPath ...string) error {
-	viper.SetConfigName(fileName)
-	viper.SetConfigType(fileType)
-	viper.SetEnvPrefix(EnvKeyEnvPrefix)
-	for _, path := range searchPath {
-		viper.AddConfigPath(path)
-	}
+type Loader interface {
+	Bind(fileName, fileType string, dst any, searchPath ...string) error
+	BindStruct(prefix string, dst any) error
+	Load(fileName, fileType string, searchPath ...string) error
+}
 
-	if err := viper.ReadInConfig(); err != nil {
-		return fmt.Errorf("[%s] [%s] parsing config:%s: %w",
-			color.Cyan("Loader"), color.Red("ERROR"), fileName, err)
-	}
+type loaderx struct {
+	registry codec.Registry
+}
 
+func NewLoader() Loader {
+	return &loaderx{
+		registry: codec.NewRegistry(),
+	}
+}
+
+func (lx loaderx) Bind(fileName, fileType string, dst any, searchPath ...string) error {
+	return nil
+}
+
+func (lx loaderx) BindStruct(prefix string, dst any) error {
+	return nil
+}
+
+func (lx loaderx) Load(fileName, fileType string, searchPath ...string) error {
 	return nil
 }

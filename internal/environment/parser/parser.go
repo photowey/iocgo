@@ -15,3 +15,12 @@
  */
 
 package parser
+
+var _ StandardParser = (*parserx)(nil)
+
+type Parser interface{}
+
+type StandardParser interface{}
+
+type parserx struct {
+}

@@ -17,5 +17,5 @@
 package loader
 
 //
-// Load configuration package
+// configuration loader
 //
