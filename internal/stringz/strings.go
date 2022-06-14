@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package parser
+package stringz
 
-var _ StandardParser = (*parserx)(nil)
+import (
+	"strings"
+)
 
-type Parser interface{}
+const (
+	EmptySlice = 0
+)
 
-type StandardParser interface{}
-
-type parserx struct {
+func IsBlankString(src string) bool {
+	return "" == src || "" == strings.TrimSpace(src)
 }
 
-func NewParser() StandardParser {
-	return &parserx{}
+func IsNotBlankString(src string) bool {
+	return !IsBlankString(src)
+}
+
+func IsEmptyStringSlice(src []string) bool {
+	return EmptySlice == len(src)
+}
+
+func IsNotEmptyStringSlice(src []string) bool {
+	return !IsEmptyStringSlice(src)
 }

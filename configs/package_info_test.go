@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package parser
+package configs
 
-var _ StandardParser = (*parserx)(nil)
-
-type Parser interface{}
-
-type StandardParser interface{}
-
-type parserx struct {
-}
-
-func NewParser() StandardParser {
-	return &parserx{}
-}
+//
+// Iocgo configuration package
+//

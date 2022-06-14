@@ -19,13 +19,14 @@ package environment
 import (
 	"os"
 
+	"github.com/photowey/iocgo/internal/constant"
 	"github.com/photowey/iocgo/internal/environment/parser"
 )
 
 var _ Environment = (*environment)(nil)
 
 type Environment interface {
-
+	Init()
 	// ---------------------------------------------------------------- Get
 
 	GetProperty(key string, standBy any) (any, error)
@@ -68,16 +69,54 @@ type StandardEnvironment interface {
 
 type environment struct {
 	keyDelimiter      string
-	configPaths       []string
 	configName        string
-	configFile        string
 	configType        string
-	configPermissions os.FileMode
 	envPrefix         string
+	mergeDepth        uint8
+	configFiles       []string
+	absPaths          []string
+	searchPaths       []string
+	activeProfiles    []string
+	configPermissions os.FileMode
 	configs           map[string]any
 	defaults          map[string]any
 	aliases           map[string]any
 	parser            parser.StandardParser
+}
+
+func NewEnvironment(opts ...Option) StandardEnvironment {
+	options := initOptions(opts...)
+	env := newEnvironment(options)
+	env.Init()
+
+	return env
+}
+
+func newEnvironment(opts *Options) StandardEnvironment {
+	return &environment{
+		keyDelimiter:      opts.KeyDelimiter,              // .
+		configName:        opts.ConfigName,                // config
+		configType:        opts.ConfigType,                // yml
+		envPrefix:         opts.EnvPrefix,                 // IOC_GO
+		mergeDepth:        opts.MergeDepth,                // 8
+		configFiles:       constant.DefaultConfigFiles,    // configs/config.yml
+		absPaths:          opts.AbsPaths,                  // . config configs
+		searchPaths:       opts.SearchPaths,               // . config configs
+		activeProfiles:    constant.DefaultActiveProfiles, // dev
+		configPermissions: os.FileMode(0x644),             // 0o644
+		configs:           make(map[string]any, 0),
+		defaults:          make(map[string]any, 0),
+		aliases:           make(map[string]any, 0),
+		parser:            parser.NewParser(),
+	}
+}
+
+// ---------------------------------------------------------------- Init
+
+func (env *environment) Init() {
+
+	// determine configs by absPaths and searchPaths etc.
+	// TODO init
 }
 
 // ---------------------------------------------------------------- Get

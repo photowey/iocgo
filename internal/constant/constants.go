@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package parser
+package constant
 
-var _ StandardParser = (*parserx)(nil)
+const (
+	DefaultConfigKeyDelimiter = "."
+	DefaultConfigName         = "config"
+	DefaultConfigType         = "yml"
+	DefaultEnvPrefix          = "IOC_GO"
+)
 
-type Parser interface{}
+const (
+	Zero                    = 0
+	DefaultMergeDepth uint8 = 8
+)
 
-type StandardParser interface{}
-
-type parserx struct {
-}
-
-func NewParser() StandardParser {
-	return &parserx{}
-}
+var (
+	DefaultConfigFiles       = []string{"configs/config.yml"}
+	DefaultActiveProfiles    = []string{"dev"}
+	DefaultConfigSearchPaths = []string{".", "config", "configs"}
+)
