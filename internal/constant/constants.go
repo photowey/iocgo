@@ -16,6 +16,16 @@
 
 package constant
 
+import (
+	"os"
+)
+
+const (
+	EmptyString   = ""
+	DotSeparator  = "."
+	PathSeparator = string(os.PathSeparator)
+)
+
 const (
 	DefaultConfigKeyDelimiter = "."
 	DefaultConfigName         = "config"
