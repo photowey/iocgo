@@ -19,19 +19,49 @@ package version
 import (
 	"fmt"
 	"runtime/debug"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-const (
-	Version string = "0.1.0"
+var (
+	Version   = "0.1.0"
+	Commit    = "unknown"
+	BuildTime = "unknown"
 )
 
 var Cmd = &cobra.Command{
 	Use: "version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("v%s", Version)
+		fmt.Fprintln(cmd.OutOrStdout(), Summary())
 	},
+}
+
+// Now returns the normalized CLI version string.
+func Now() string {
+	value := strings.TrimSpace(Version)
+	switch {
+	case value == "", value == "unknown":
+		return "(unknown)"
+	case value == "dev":
+		return value
+	case strings.HasPrefix(value, "v"):
+		return value
+	default:
+		return "v" + value
+	}
+}
+
+// Summary returns the CLI version metadata summary.
+func Summary() string {
+	version := Now()
+	commit := normalizeValue(Commit, "unknown")
+	buildTime := normalizeValue(BuildTime, "unknown")
+	if commit == "unknown" && buildTime == "unknown" {
+		return version
+	}
+
+	return fmt.Sprintf("%s (commit %s, built %s)", version, commit, buildTime)
 }
 
 // MainVersion returns the version of the main module
@@ -44,7 +74,16 @@ func MainVersion() string {
 	return info.Main.Version
 }
 
-// Print prints the main module version on stdout.
+// Print prints the CLI version summary on stdout.
 func Print() {
-	fmt.Printf("Version: %s\n", MainVersion())
+	fmt.Printf("Version: %s\n", Summary())
+}
+
+func normalizeValue(value, fallback string) string {
+	normalized := strings.TrimSpace(value)
+	if normalized == "" {
+		return fallback
+	}
+
+	return normalized
 }

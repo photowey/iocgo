@@ -66,6 +66,8 @@ Or build it from the current workspace:
 
 ```bash
 go build -o ioctl ./cmd/ioctl
+# or
+make build
 ```
 
 Then verify:

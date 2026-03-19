@@ -84,6 +84,8 @@ go install github.com/photowey/iocgo/cmd/ioctl@latest
 
 ```bash
 go build -o ioctl ./cmd/ioctl
+# 或者
+make build
 ```
 
 验证：
