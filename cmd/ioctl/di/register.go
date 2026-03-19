@@ -1,11 +1,11 @@
 /*
- * Copyright © 2022 photowey (photowey@gmail.com)
+ * Copyright © 2022-present the iocgo authors. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,6 @@ package di
 import (
 	"io"
 
-	"sigs.k8s.io/controller-tools/pkg/loader"
 	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
@@ -27,14 +26,9 @@ type Writer struct {
 	out io.Writer
 }
 
-type Imports struct {
-	byPath map[string]string
-	byName map[string]string
-	pkg    *loader.Package
-}
+type Imports struct{}
 
 type BeanDefinitionMaker struct {
-	pkg *loader.Package
 	*Imports
 	*Writer
 	TypeInfos []*markers.TypeInfo
@@ -44,9 +38,8 @@ func (c *BeanDefinitionMaker) Generate() {
 	// TODO
 }
 
-func NewBeanDefinitionMaker(pkg *loader.Package, imports *Imports, writer *Writer, typeInfos []*markers.TypeInfo) BeanDefinitionMaker {
+func NewBeanDefinitionMaker(imports *Imports, writer *Writer, typeInfos []*markers.TypeInfo) BeanDefinitionMaker {
 	return BeanDefinitionMaker{
-		pkg:       pkg,
 		Imports:   imports,
 		Writer:    writer,
 		TypeInfos: typeInfos,

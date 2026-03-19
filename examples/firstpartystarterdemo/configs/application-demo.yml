@@ -1,0 +1,9 @@
+nemo:
+  application:
+    name: "starter-demo-app"
+
+app:
+  info:
+    name: "starter-demo-config"
+  feature:
+    enabled: true

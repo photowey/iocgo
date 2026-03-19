@@ -16,3 +16,12 @@
 
 .idea/
 logs/
+
+.cache/
+
+### Vibe coding files ###
+.codex/
+.cursor/
+.claude/
+
+openspec/

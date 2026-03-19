@@ -1,11 +1,11 @@
 /*
- * Copyright © 2022 photowey (photowey@gmail.com)
+ * Copyright © 2022-present the iocgo authors. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,9 +51,11 @@ func (app Cmder) Run() {
 				panic(err)
 			}
 		}
-		fmt.Fprintf(rootCmd.OutOrStderr(),
+		if _, writeErr := fmt.Fprintf(rootCmd.OutOrStderr(),
 			"run `%[1]s %[2]s -w` to see all available markers, or `%[1]s %[2]s -h` for usage\n",
-			rootCmd.CalledAs(), strings.Join(os.Args[1:], " "))
+			rootCmd.CalledAs(), strings.Join(os.Args[1:], " ")); writeErr != nil {
+			panic(writeErr)
+		}
 
 		os.Exit(1)
 	}

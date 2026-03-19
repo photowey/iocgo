@@ -1,0 +1,9 @@
+nemo:
+  application:
+    name: "starter-base-app"
+
+app:
+  info:
+    name: "starter-base-info"
+  feature:
+    enabled: false

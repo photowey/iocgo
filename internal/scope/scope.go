@@ -1,11 +1,11 @@
 /*
- * Copyright © 2022 photowey (photowey@gmail.com)
+ * Copyright © 2022-present the iocgo authors. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,37 @@
 
 package scope
 
+import "fmt"
+
 type Scope uint8
 
 const (
-	Singleton Scope = 1 << 1
-	Prototype Scope = 1 << 2
+	Singleton Scope = iota + 1
+	Prototype
 )
+
+func (s Scope) String() string {
+	switch s {
+	case Singleton:
+		return "singleton"
+	case Prototype:
+		return "prototype"
+	default:
+		return "unknown"
+	}
+}
+
+func (s Scope) Valid() bool {
+	return s == Singleton || s == Prototype
+}
+
+func Parse(src string) (Scope, error) {
+	switch src {
+	case "", "singleton":
+		return Singleton, nil
+	case "prototype":
+		return Prototype, nil
+	default:
+		return 0, fmt.Errorf("unsupported scope %q", src)
+	}
+}
