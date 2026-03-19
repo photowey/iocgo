@@ -33,7 +33,10 @@ var (
 var Cmd = &cobra.Command{
 	Use: "version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Fprintln(cmd.OutOrStdout(), Summary())
+		_, err := fmt.Fprintln(cmd.OutOrStdout(), Summary())
+		if err != nil {
+			return
+		}
 	},
 }
 
