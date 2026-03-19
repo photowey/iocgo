@@ -27,25 +27,22 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      - name: Get dependencies and tidy
-        run: |
-          make tidy
+      - name: Verify module files
+        run: make verify-mod
         env:
-          GOPROXY: "https://proxy.golang.org,direct"
+          GOPROXY: https://proxy.golang.org,direct
 
-      - name: Check code formatting (gofmt)
-        run: |
-          FILES=$(gofmt -l .)
-          if [ -n "$FILES" ]; then
-            echo "The following files are not formatted correctly:"
-            echo "$FILES"
-            echo "Please run 'go fmt ./...' locally and commit the changes."
-            exit 1
-          fi
-          echo "All files are formatted correctly."
+      - name: Check formatting
+        run: make fmt-check
 
       - name: Run tests
-        run: |
-          make test
+        run: make test
         env:
           CGO_ENABLED: 0
+          GOPROXY: https://proxy.golang.org,direct
+
+      - name: Build ioctl
+        run: make build BINARY=/tmp/ioctl
+        env:
+          CGO_ENABLED: 0
+          GOPROXY: https://proxy.golang.org,direct
